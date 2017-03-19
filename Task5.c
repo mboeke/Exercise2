@@ -5,25 +5,29 @@
 int ternarySearch(int A[], int l, int r, int k){
 	int mid1,mid2;
 	
-	while (r>l){
-		mid1 = floor(l+(r-l)/3);
-		mid2 = floor(r-(r-l)/3);
-
+	while (r>=l){
+		// mid1 und mid2 festlegen, interval wird gleichmässig gedrittelt,falls möglich
+		mid1 = ceil(l+(r-l)/3);
+		mid2 = ceil(r-(r-l)/3);
+		
+		// prüfen ob mid1 oder mid2 unser element ist
 		if (A[mid1] == k){
 			return mid1;
-		} else if (A[mid2] == k){
+		}else if (A[mid2] == k){
 			return mid2;
 		}
 		
+		// mid1 und mid2 schon geprüft -> mid1/mid2+-1
 		if (A[mid1]>k){
-			return ternarySearch(A, l, mid1, k);
+			return ternarySearch(A, l, mid1-1, k);
 		}
 		else if (A[mid2] <= k){
-			return ternarySearch(A, mid2, r, k);
+			return ternarySearch(A, mid2+1, r, k);
 		}else{
-			return ternarySearch(A, mid1, mid2, k);
+			return ternarySearch(A, mid1+1, mid2-1, k);
 		}
 	}
+	// falls element nicht gefunden
 	return -1;
 }
 
@@ -36,15 +40,17 @@ int main(){
 		i++;
 	}
 	scanf("%*s");
-	printf("\nEnter the element you want to search for:\n");
+	printf("\nGieb das Element an, welches du suchst:\n");
 	scanf("%d", &k);
-
+	// i == n -> array hat ellemente 0-n-1
 	r = i-1;
 	result = ternarySearch(A,0,r,k);
+	
+	// je nach return von funktion verschiedene Meldungen anzeigen
 	if (result == -1){
-		printf("\nYour element wasn't found in the array!");
+		printf("\nIhr Element wurde im Array nicht gefunden!");
 	}else{
-		printf ("\nYour element is at position %d in the array!", result);
+		printf ("\nIhr Element is an Stelle %d im Array!", result);
 	}
 	return 0;
 }
